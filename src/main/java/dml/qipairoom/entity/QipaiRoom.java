@@ -14,4 +14,6 @@ public interface QipaiRoom {
     boolean isFull();
 
     void playerReady(String playerId);
+
+    boolean isAllPlayerReady();
 }
