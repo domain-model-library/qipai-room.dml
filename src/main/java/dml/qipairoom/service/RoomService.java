@@ -86,4 +86,11 @@ public class RoomService {
 
         return qipaiRoomRepository.find(roomNo);
     }
+
+    public static boolean isPlayerInRoom(RoomServiceRepositorySet roomServiceRepositorySet,
+                                           String playerId) {
+        PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
+        PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(playerId);
+        return playerRoomJoin != null && playerRoomJoin.getRoomNoIn() != null;
+    }
 }
