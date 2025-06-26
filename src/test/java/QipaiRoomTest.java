@@ -11,7 +11,8 @@ import dml.qipairoom.service.result.CreateRoomResult;
 import dml.qipairoom.service.result.JoinRoomResult;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class QipaiRoomTest {
 
@@ -44,13 +45,32 @@ public class QipaiRoomTest {
         assertFalse(createRoomResult3.isSuccess());
         assertTrue(createRoomResult3.isInAnotherRoom());
 
-        //玩家准备好了，开始游戏，删除房间
+        //玩家准备好了，开始游戏
         QipaiRoom room1 = RoomService.playerReady(roomServiceRepositorySet,
                 createRoomResult1.getRoomNo(), createRoomPlayerId1);
         room1 = RoomService.playerReady(roomServiceRepositorySet,
                 room1.getNo(), joinPlayerId1);
-        room1 = RoomService.findRoom(roomServiceRepositorySet, room1.getNo());
-        assertNull(room1);
+
+        //游戏结束，解散房间
+        RoomService.dismissRoom(roomServiceRepositorySet, room1.getNo());
+
+        //游戏结束后，玩家可以重新创建房间
+        CreateRoomResult createRoomResult4 = RoomService.createRoom(roomServiceRepositorySet,
+                createRoomPlayerId1, playersCount, new TestQipaiRoom());
+        assertTrue(createRoomResult4.isSuccess());
+
+        //玩家2可以加入新房间
+        JoinRoomResult joinRoomResult3 = RoomService.joinRoom(roomServiceRepositorySet,
+                createRoomResult4.getRoomNo(), joinPlayerId1);
+        assertTrue(joinRoomResult3.isSuccess());
+
+        //房主直接解散房间
+        RoomService.dismissRoomByOwner(roomServiceRepositorySet, createRoomPlayerId1);
+
+        //玩家2可以创建新房间
+        CreateRoomResult createRoomResult5 = RoomService.createRoom(roomServiceRepositorySet,
+                joinPlayerId1, playersCount, new TestQipaiRoom());
+        assertTrue(createRoomResult5.isSuccess());
 
     }
 

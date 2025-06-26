@@ -1,12 +1,15 @@
 package dml.qipairoom.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class QipaiRoomBase implements QipaiRoom {
     private String no;
     private int maxPlayersCount;
     private Map<String, RoomPlayer> players = new HashMap<>();
+    private String ownerId;
 
     @Override
     public void setNo(String no) {
@@ -59,5 +62,20 @@ public abstract class QipaiRoomBase implements QipaiRoom {
             }
         }
         return true;
+    }
+
+    @Override
+    public List<String> getPlayerIds() {
+        return new ArrayList<>(players.keySet());
+    }
+
+    @Override
+    public void setOwner(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    @Override
+    public String getOwner() {
+        return ownerId;
     }
 }

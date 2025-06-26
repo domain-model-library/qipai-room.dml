@@ -1,5 +1,7 @@
 package dml.qipairoom.entity;
 
+import java.util.List;
+
 public interface QipaiRoom {
     void setNo(String no);
 
@@ -16,4 +18,10 @@ public interface QipaiRoom {
     void playerReady(String playerId);
 
     boolean isAllPlayerReady();
+
+    List<String> getPlayerIds();
+
+    void setOwner(String ownerId);
+
+    String getOwner();
 }

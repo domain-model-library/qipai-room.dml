@@ -30,6 +30,7 @@ public class RoomService {
         newQipaiRoom.setNo(roomNo);
         newQipaiRoom.setMaxPlayersCount(playersCount);
         newQipaiRoom.joinPlayer(createRoomPlayerId);
+        newQipaiRoom.setOwner(createRoomPlayerId);
         qipaiRoomRepository.put(newQipaiRoom);
         playerRoomJoin.setRoomNoIn(newQipaiRoom.getNo());
         result.setRoomNo(roomNo);
@@ -73,10 +74,6 @@ public class RoomService {
 
         QipaiRoom qipaiRoom = qipaiRoomRepository.take(roomNo);
         qipaiRoom.playerReady(playerId);
-        if (qipaiRoom.isAllPlayerReady()) {
-            qipaiRoomRepository.remove(roomNo);
-            return qipaiRoom;
-        }
         return qipaiRoom;
     }
 
@@ -88,9 +85,38 @@ public class RoomService {
     }
 
     public static boolean isPlayerInRoom(RoomServiceRepositorySet roomServiceRepositorySet,
-                                           String playerId) {
+                                         String playerId) {
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
         PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(playerId);
         return playerRoomJoin != null && playerRoomJoin.getRoomNoIn() != null;
+    }
+
+    public static void dismissRoom(RoomServiceRepositorySet roomServiceRepositorySet,
+                                   String roomNo) {
+        QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
+        PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
+        QipaiRoom qipaiRoom = qipaiRoomRepository.remove(roomNo);
+        if (qipaiRoom != null) {
+            for (String playerId : qipaiRoom.getPlayerIds()) {
+                PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.take(playerId);
+                if (playerRoomJoin != null) {
+                    playerRoomJoin.setRoomNoIn(null);
+                }
+            }
+        }
+    }
+
+    public static void dismissRoomByOwner(RoomServiceRepositorySet roomServiceRepositorySet,
+                                          String ownerPlayerId) {
+        PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
+        QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
+        PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(ownerPlayerId);
+        if (playerRoomJoin != null && playerRoomJoin.getRoomNoIn() != null) {
+            String roomNo = playerRoomJoin.getRoomNoIn();
+            QipaiRoom qipaiRoom = qipaiRoomRepository.take(roomNo);
+            if (qipaiRoom != null && qipaiRoom.getOwner().equals(ownerPlayerId)) {
+                dismissRoom(roomServiceRepositorySet, roomNo);
+            }
+        }
     }
 }
