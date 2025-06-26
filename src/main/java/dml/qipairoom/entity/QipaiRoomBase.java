@@ -6,20 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class QipaiRoomBase implements QipaiRoom {
-    private String no;
     private int maxPlayersCount;
     private Map<String, RoomPlayer> players = new HashMap<>();
     private String ownerId;
-
-    @Override
-    public void setNo(String no) {
-        this.no = no;
-    }
-
-    @Override
-    public String getNo() {
-        return no;
-    }
 
     @Override
     public void setMaxPlayersCount(int maxPlayersCount) {
