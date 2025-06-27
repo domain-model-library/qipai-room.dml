@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class QipaiRoomBase implements QipaiRoom {
-    private int maxPlayersCount;
-    private Map<String, RoomPlayer> players = new HashMap<>();
-    private String ownerId;
+    protected int maxPlayersCount;
+    protected Map<String, RoomPlayer> players = new HashMap<>();
+    protected String ownerId;
 
     @Override
     public void setMaxPlayersCount(int maxPlayersCount) {
