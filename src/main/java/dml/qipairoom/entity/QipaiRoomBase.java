@@ -9,6 +9,8 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     protected int maxPlayersCount;
     protected Map<String, RoomPlayer> players = new HashMap<>();
     protected String ownerId;
+    protected boolean starting = false;
+    protected boolean playing = false;
 
     @Override
     public void setMaxPlayersCount(int maxPlayersCount) {
@@ -66,5 +68,22 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     @Override
     public String getOwner() {
         return ownerId;
+    }
+
+    @Override
+    public boolean isStarting() {
+        return starting;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    @Override
+    public void checkReadyAndStart() {
+        if (isAllPlayerReady() && !isStarting() && !isPlaying()) {
+            starting = true;
+        }
     }
 }
