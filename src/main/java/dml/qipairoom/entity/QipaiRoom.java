@@ -24,16 +24,4 @@ public interface QipaiRoom {
     void setOwner(String ownerId);
 
     String getOwner();
-
-    /**
-     * 是否启动中
-     */
-    boolean isStarting();
-
-    /**
-     * 是否游戏中
-     */
-    boolean isPlaying();
-
-    void checkReadyAndStart();
 }

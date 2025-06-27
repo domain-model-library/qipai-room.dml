@@ -129,14 +129,4 @@ public class RoomService {
         }
         return findRoom(roomServiceRepositorySet, playerRoomJoin.getRoomNoIn());
     }
-
-    public static QipaiRoom checkRoomReadyAndStart(RoomServiceRepositorySet roomServiceRepositorySet,
-                                                   String roomNo) {
-        QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
-        QipaiRoom qipaiRoom = qipaiRoomRepository.take(roomNo);
-        if (qipaiRoom != null) {
-            qipaiRoom.checkReadyAndStart();
-        }
-        return qipaiRoom;
-    }
 }
