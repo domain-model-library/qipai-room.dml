@@ -19,13 +19,13 @@ public class QipaiRoomTest {
     @Test
     public void test() {
         // 创建2人房间
-        String createRoomPlayerId1 = "1";
+        long createRoomPlayerId1 = 1L;
         int playersCount = 2;
         CreateRoomResult createRoomResult1 = RoomService.createRoom(roomServiceRepositorySet,
                 createRoomPlayerId1, playersCount, new TestQipaiRoom());
 
         //玩家加入房间
-        String joinPlayerId1 = "2";
+        long joinPlayerId1 = 2L;
         JoinRoomResult joinRoomResult1 = RoomService.joinRoom(roomServiceRepositorySet,
                 createRoomResult1.getRoomNo(), joinPlayerId1);
         assertTrue(joinRoomResult1.isSuccess());

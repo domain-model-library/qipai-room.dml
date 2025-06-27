@@ -9,19 +9,19 @@ public interface QipaiRoom {
 
     void setMaxPlayersCount(int maxPlayersCount);
 
-    void joinPlayer(String playerId);
+    void joinPlayer(Object playerId);
 
-    boolean containsPlayer(String playerId);
+    boolean containsPlayer(Object playerId);
 
     boolean isFull();
 
-    void playerReady(String playerId);
+    void playerReady(Object playerId);
 
     boolean isAllPlayerReady();
 
-    List<String> getPlayerIds();
+    List<Object> getPlayerIds();
 
-    void setOwner(String ownerId);
+    void setOwnerId(Object ownerId);
 
-    String getOwner();
+    Object getOwnerId();
 }

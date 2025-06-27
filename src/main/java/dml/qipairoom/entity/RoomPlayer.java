@@ -1,21 +1,21 @@
 package dml.qipairoom.entity;
 
 public class RoomPlayer {
-    private String id;
+    private Object id;
     private boolean ready;
 
     public RoomPlayer() {
     }
 
-    public RoomPlayer(String id) {
+    public RoomPlayer(Object id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Object getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Object id) {
         this.id = id;
     }
 

@@ -12,7 +12,7 @@ import dml.qipairoom.service.result.JoinRoomResult;
 
 public class RoomService {
     public static CreateRoomResult createRoom(RoomServiceRepositorySet roomServiceRepositorySet,
-                                              String createRoomPlayerId, int playersCount, QipaiRoom newQipaiRoom) {
+                                              Object createRoomPlayerId, int playersCount, QipaiRoom newQipaiRoom) {
         QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
         RoomNoGeneratorRepository<RoomNoGenerator> roomNoGeneratorRepository = roomServiceRepositorySet.getRoomNoGeneratorRepository();
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
@@ -30,7 +30,7 @@ public class RoomService {
         newQipaiRoom.setNo(roomNo);
         newQipaiRoom.setMaxPlayersCount(playersCount);
         newQipaiRoom.joinPlayer(createRoomPlayerId);
-        newQipaiRoom.setOwner(createRoomPlayerId);
+        newQipaiRoom.setOwnerId(createRoomPlayerId);
         qipaiRoomRepository.put(newQipaiRoom);
         playerRoomJoin.setRoomNoIn(newQipaiRoom.getNo());
         result.setRoomNo(roomNo);
@@ -39,7 +39,7 @@ public class RoomService {
     }
 
     public static JoinRoomResult joinRoom(RoomServiceRepositorySet roomServiceRepositorySet,
-                                          String roomNo, String joinPlayerId) {
+                                          String roomNo, Object joinPlayerId) {
         QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
 
@@ -69,7 +69,7 @@ public class RoomService {
     }
 
     public static QipaiRoom playerReady(RoomServiceRepositorySet roomServiceRepositorySet,
-                                        String roomNo, String playerId) {
+                                        String roomNo, Object playerId) {
         QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
 
         QipaiRoom qipaiRoom = qipaiRoomRepository.take(roomNo);
@@ -85,7 +85,7 @@ public class RoomService {
     }
 
     public static boolean isPlayerInRoom(RoomServiceRepositorySet roomServiceRepositorySet,
-                                         String playerId) {
+                                         Object playerId) {
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
         PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(playerId);
         return playerRoomJoin != null && playerRoomJoin.getRoomNoIn() != null;
@@ -97,7 +97,7 @@ public class RoomService {
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
         QipaiRoom qipaiRoom = qipaiRoomRepository.remove(roomNo);
         if (qipaiRoom != null) {
-            for (String playerId : qipaiRoom.getPlayerIds()) {
+            for (Object playerId : qipaiRoom.getPlayerIds()) {
                 PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.take(playerId);
                 if (playerRoomJoin != null) {
                     playerRoomJoin.setRoomNoIn(null);
@@ -107,14 +107,14 @@ public class RoomService {
     }
 
     public static QipaiRoom dismissRoomByOwner(RoomServiceRepositorySet roomServiceRepositorySet,
-                                               String ownerPlayerId) {
+                                               Object ownerPlayerId) {
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
         QipaiRoomRepository<QipaiRoom> qipaiRoomRepository = roomServiceRepositorySet.getQipaiRoomRepository();
         PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(ownerPlayerId);
         if (playerRoomJoin != null && playerRoomJoin.getRoomNoIn() != null) {
             String roomNo = playerRoomJoin.getRoomNoIn();
             QipaiRoom qipaiRoom = qipaiRoomRepository.take(roomNo);
-            if (qipaiRoom != null && qipaiRoom.getOwner().equals(ownerPlayerId)) {
+            if (qipaiRoom != null && qipaiRoom.getOwnerId().equals(ownerPlayerId)) {
                 dismissRoom(roomServiceRepositorySet, roomNo);
                 return qipaiRoom;
             }
@@ -123,7 +123,7 @@ public class RoomService {
     }
 
     public static QipaiRoom findRoomForPlayer(RoomServiceRepositorySet roomServiceRepositorySet,
-                                              String playerId) {
+                                              Object playerId) {
         PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
         PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(playerId);
         if (playerRoomJoin == null || playerRoomJoin.getRoomNoIn() == null) {

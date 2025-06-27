@@ -7,8 +7,8 @@ import java.util.Map;
 
 public abstract class QipaiRoomBase implements QipaiRoom {
     protected int maxPlayersCount;
-    protected Map<String, RoomPlayer> players = new HashMap<>();
-    protected String ownerId;
+    protected Map<Object, RoomPlayer> players = new HashMap<>();
+    protected Object ownerId;
 
     @Override
     public void setMaxPlayersCount(int maxPlayersCount) {
@@ -16,7 +16,7 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     }
 
     @Override
-    public void joinPlayer(String playerId) {
+    public void joinPlayer(Object playerId) {
         RoomPlayer existingPlayer = players.get(playerId);
         if (existingPlayer != null) {
             return;
@@ -26,7 +26,7 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     }
 
     @Override
-    public boolean containsPlayer(String playerId) {
+    public boolean containsPlayer(Object playerId) {
         return players.containsKey(playerId);
     }
 
@@ -36,7 +36,7 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     }
 
     @Override
-    public void playerReady(String playerId) {
+    public void playerReady(Object playerId) {
         RoomPlayer player = players.get(playerId);
         if (player != null) {
             player.setReady(true);
@@ -54,17 +54,17 @@ public abstract class QipaiRoomBase implements QipaiRoom {
     }
 
     @Override
-    public List<String> getPlayerIds() {
+    public List<Object> getPlayerIds() {
         return new ArrayList<>(players.keySet());
     }
 
     @Override
-    public void setOwner(String ownerId) {
+    public void setOwnerId(Object ownerId) {
         this.ownerId = ownerId;
     }
 
     @Override
-    public String getOwner() {
+    public Object getOwnerId() {
         return ownerId;
     }
 }

@@ -1,21 +1,21 @@
 package dml.qipairoom.entity;
 
 public class PlayerRoomJoin {
-    private String playerId;
+    private Object playerId;
     private String roomNoIn;
 
     public PlayerRoomJoin() {
     }
 
-    public PlayerRoomJoin(String playerId) {
+    public PlayerRoomJoin(Object playerId) {
         this.playerId = playerId;
     }
 
-    public String getPlayerId() {
+    public Object getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(Object playerId) {
         this.playerId = playerId;
     }
 
