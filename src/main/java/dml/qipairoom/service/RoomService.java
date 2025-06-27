@@ -119,4 +119,14 @@ public class RoomService {
             }
         }
     }
+
+    public static QipaiRoom findRoomForPlayer(RoomServiceRepositorySet roomServiceRepositorySet,
+                                              String playerId) {
+        PlayerRoomJoinRepository playerRoomJoinRepository = roomServiceRepositorySet.getPlayerRoomJoinRepository();
+        PlayerRoomJoin playerRoomJoin = playerRoomJoinRepository.find(playerId);
+        if (playerRoomJoin == null || playerRoomJoin.getRoomNoIn() == null) {
+            return null;
+        }
+        return findRoom(roomServiceRepositorySet, playerRoomJoin.getRoomNoIn());
+    }
 }
