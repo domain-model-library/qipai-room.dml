@@ -25,7 +25,7 @@ public class RoomService {
             result.setSuccess(false);
             return result;
         }
-        RoomNoGenerator roomNoGenerator = roomNoGeneratorRepository.get();
+        RoomNoGenerator roomNoGenerator = roomNoGeneratorRepository.take();
         String roomNo = roomNoGenerator.generate();
         newQipaiRoom.setNo(roomNo);
         newQipaiRoom.setMaxPlayersCount(playersCount);
